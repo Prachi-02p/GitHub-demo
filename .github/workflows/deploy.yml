@@ -7,6 +7,11 @@ on:
       - test
       - prod
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
 
   development:
@@ -51,7 +56,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Check website
-        run: |
-          test -f index.html
-          echo "Production deployment successful"
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
