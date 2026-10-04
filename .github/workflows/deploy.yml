@@ -19,7 +19,7 @@ jobs:
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     environment:
-      name: development
+      name: github-pages
 
     steps:
       - name: Checkout code
