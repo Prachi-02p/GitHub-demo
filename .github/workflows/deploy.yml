@@ -1,0 +1,69 @@
+name: Website CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - dev
+      - test
+      - prod
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+
+  development:
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    environment:
+      name: development
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Check website
+        run: |
+          test -f index.html
+          echo "Development deployment successful"
+
+
+  staging:
+    if: github.ref == 'refs/heads/test'
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Check website
+        run: |
+          test -f index.html
+          echo "Staging deployment successful"
+
+
+  production:
+    if: github.ref == 'refs/heads/prod'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
