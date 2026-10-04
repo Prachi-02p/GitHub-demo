@@ -1,3 +1,4 @@
+
 name: Website CI/CD Pipeline
 
 on:
@@ -24,10 +25,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Check website
-        run: |
-          test -f index.html
-          echo "Development deployment successful"
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+
+      - name: Deploy website
+        uses: actions/deploy-pages@v4
 
 
   staging:
@@ -43,7 +50,7 @@ jobs:
       - name: Check website
         run: |
           test -f index.html
-          echo "Staging deployment successful"
+          echo "Staging check successful"
 
 
   production:
@@ -65,5 +72,4 @@ jobs:
           path: .
 
       - name: Deploy website
-        id: deployment
         uses: actions/deploy-pages@v4
